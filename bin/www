@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 
 /**
  * Module dependencies.
  */
-require('dotenv').config()
+require('dotenv').config();
 var app = require('../app');
 var debug = require('debug')('temp-view:server');
 var http = require('http');

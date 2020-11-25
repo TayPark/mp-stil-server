@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+// mute eslint for guarantee global vars
 import mongoose from 'mongoose';
 mongoose.Promise = global.Promise;
 
