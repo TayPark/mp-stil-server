@@ -65,7 +65,7 @@ export const deleteStil = async (req, res, next) => {
         if (deletion.n == 1) {
             return res.sendStatus(200);
         } else {
-            next(createError(400, '이미 처리된 데이터입니다.'));
+            next(createError(400, 'Already processed'));
         }
     } catch (e) {
         next(createError(e));

@@ -8,7 +8,7 @@ export const join = async (req, res, next) => {
         const existence = await models.User.findOne({ email });
 
         if (existence) {
-            return next(createError(400, 'Duplicated email'));
+            next(createError(400, 'Duplicated email'));
         } else {
             const joinResult = await models.User.create(email, password);
 
@@ -16,11 +16,11 @@ export const join = async (req, res, next) => {
                 return res.sendStatus(201);
             } else {
                 console.error(joinResult);
-                return res.sendStatus(400);
+                next(createError(400, 'Check your account'));
             }
         }
     } catch (e) {
-        return next(createError(500));
+        next(createError(500));
     }
 };
 
@@ -32,9 +32,9 @@ export const login = async (req, res, next) => {
         if (matchResult) {
             return res.sendStatus(200);
         } else {
-            return next(createError(404, 'No such account'));
+            next(createError(404, 'No such account'));
         }
     } catch (e) {
-        return next(createError(500));
+        next(createError(500));
     }
 };

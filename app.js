@@ -39,7 +39,7 @@ app.use('/user', userRouter);
 app.use('/stil', stilRouter);
 
 app.use((req, res, next) => {
-    next(createError(404));
+    next(createError(404, 'Wrong access'));
 });
 
 /**
