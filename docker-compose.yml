@@ -1,0 +1,36 @@
+version: '3'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./
+      dockerfile: Dockerfile.server
+    volumes:
+      - ./:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
+    env_file:
+      - ./.env
+    networks:
+      - backend
+    ports:
+      - 8080:3000
+    expose: [8080]
+    restart: always
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+    expose: [27017]
+    networks:
+      - backend
+
+    
