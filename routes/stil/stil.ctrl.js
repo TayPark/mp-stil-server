@@ -3,43 +3,24 @@ import createError from 'http-errors';
 
 export const getStilByType = async (req, res, next) => {
     const requestType = req.query.type;
-    const email = req.body.email;
+    const email = req.query.email;
     const projectionOpt = { __v: 0 };
     let resultData;
 
     try {
         if (requestType === 'my') {
-            resultData = await models.Stil.find({ author: email, deployed: false }, projectionOpt);
+            const temp = await models.Stil.find({ author: email, deployed: false }, projectionOpt);
+	    resultData = temp.map(each => { return each.content });
         } else if (requestType === 'share') {
             resultData = await models.Stil.find({ deployed: true }, projectionOpt);
         } else if (requestType === 'bookmark') {
-            resultData = await models.Bookmark.findByEmail(email);
+            const temp = await models.Bookmark.findByEmail(email);
+	    resultData = temp.map(each => { return each.stil });
         } else {
             next(createError(404, 'Unproper access'));
         }
 
         return res.status(200).json(resultData);
-    } catch (e) {
-        next(createError(e));
-    }
-};
-
-// Get share stils
-export const allStil = async (req, res, next) => {
-    try {
-        const allDataSet = await models.Stil.find();
-        return res.status(200).json(allDataSet);
-    } catch (e) {
-        next(createError(e));
-    }
-};
-
-export const getBookmark = async (req, res, next) => {
-    const email = req.body.email;
-
-    try {
-        const resultSet = await models.Stil.find({ author: email });
-        return res.status(200).json(resultSet);
     } catch (e) {
         next(createError(e));
     }
@@ -57,10 +38,11 @@ export const deploy = async (req, res, next) => {
 };
 
 export const deleteStil = async (req, res, next) => {
-    const targetId = req.body.targetId;
+    const { email, stil } = req.body;
+	const targetId = req.body.targetId;
 
     try {
-        const deletion = await models.Stil.deleteOne({ _id: targetId });
+        const deletion = await models.Stil.deleteOne({ email, stil });
 
         if (deletion.n == 1) {
             return res.sendStatus(200);

@@ -3,7 +3,7 @@ import * as models from '../../models/index';
 
 export const join = async (req, res, next) => {
     const { email, password } = req.body;
-
+    console.log("Join requested by " + email, password);
     try {
         const existence = await models.User.findOne({ email });
 
@@ -13,7 +13,7 @@ export const join = async (req, res, next) => {
             const joinResult = await models.User.create(email, password);
 
             if (joinResult) {
-                return res.sendStatus(201);
+                return res.status(201).json({ ok: 1 });
             } else {
                 console.error(joinResult);
                 next(createError(400, 'Check your account'));
@@ -26,11 +26,11 @@ export const join = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
     const { email, password } = req.body;
-
+    console.log("Login requested by " + email, password);
     try {
         const matchResult = await models.User.findOne({ email, password });
         if (matchResult) {
-            return res.sendStatus(200);
+            return res.status(200).json({ ok: 1 });
         } else {
             next(createError(404, 'No such account'));
         }

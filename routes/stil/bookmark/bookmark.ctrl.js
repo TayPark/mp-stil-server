@@ -38,8 +38,6 @@ export const addBookmark = async (req, res, next) => {
 export const deleteBookmark = async (req, res, next) => {
     const { email, stil } = req.body;
 
-    console.log(email, stil)
-
     try {
         const deletion = await models.Bookmark.deleteOne({ email, stil });
 
