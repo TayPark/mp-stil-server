@@ -26,6 +26,7 @@ export const getStilByType = async (req, res, next) => {
 
     return res.status(200).json(resultData);
   } catch (e) {
+    console.error(e);
     next(createError(e));
   }
 };
@@ -34,8 +35,9 @@ export const save = async (req, res, next) => {
   const { content, author } = req.body;
 
   try {
-    await models.Stil.updateOne({ author }, { $set: { content } });
+    await models.Stil.updateOne({ author, deploy: false }, { $set: { content } });
   } catch (e) {
+    console.error(e);
     next(createError(e));
   }
 };
@@ -47,6 +49,7 @@ export const deploy = async (req, res, next) => {
     await models.Stil.create(title, summary, content, author);
     return res.sendStatus(200);
   } catch (e) {
+    console.error(e);
     next(createError(e));
   }
 };
@@ -63,6 +66,7 @@ export const deleteStil = async (req, res, next) => {
       next(createError(400, 'Already processed'));
     }
   } catch (e) {
+    console.error(e);
     next(createError(e));
   }
 };
