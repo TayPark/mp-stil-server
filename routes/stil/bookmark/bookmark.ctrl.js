@@ -18,7 +18,7 @@ export const addBookmark = async (req, res, next) => {
     const creationResult = await models.Bookmark.create({ email, stil });
 
     if (creationResult) {
-      return res.sendStatus(200);
+      return res.status(200).json({ ok: 1 });
     } else {
       next(createError(400, 'Fail to add bookmark'));
     }
@@ -44,7 +44,7 @@ export const deleteBookmark = async (req, res, next) => {
     const deletion = await models.Bookmark.deleteOne({ email, stil });
 
     if (deletion.n == 1) {
-      return res.sendStatus(200);
+      return res.status(200).json({ ok: 1 });
     } else {
       next(createError(400, 'Already processed'));
     }

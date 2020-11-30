@@ -47,7 +47,7 @@ export const deploy = async (req, res, next) => {
 
   try {
     await models.Stil.create(title, summary, content, author);
-    return res.sendStatus(200);
+    return res.status(200).json({ ok: 1 });
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -61,7 +61,7 @@ export const deleteStil = async (req, res, next) => {
     const deletion = await models.Stil.deleteOne({ email, stil });
 
     if (deletion.n == 1) {
-      return res.sendStatus(200);
+      return res.status(200).json({ ok: 1 });
     } else {
       next(createError(400, 'Already processed'));
     }
