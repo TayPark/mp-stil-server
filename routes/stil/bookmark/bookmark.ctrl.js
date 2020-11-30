@@ -12,10 +12,10 @@ import * as models from './../../../models';
  * @var stil - Stil's objectId to be deleted
  */
 export const addBookmark = async (req, res, next) => {
-  const { email, stil } = req.body;
+  const { email, stilId } = req.body;
 
   try {
-    const creationResult = await models.Bookmark.create({ email, stil });
+    const creationResult = await models.Bookmark.create({ email, stil: stilId });
 
     if (creationResult) {
       return res.status(200).json({ ok: 1 });
@@ -23,6 +23,7 @@ export const addBookmark = async (req, res, next) => {
       next(createError(400, 'Fail to add bookmark'));
     }
   } catch (e) {
+    console.error(e);
     next(createError(500));
   }
 };
@@ -38,17 +39,19 @@ export const addBookmark = async (req, res, next) => {
  * @var stil - Stil's objectId to be deleted
  */
 export const deleteBookmark = async (req, res, next) => {
-  const { email, stil } = req.body;
+  const { email, stilId } = req.body;
 
   try {
-    const deletion = await models.Bookmark.deleteOne({ email, stil });
+    const deletion = await models.Bookmark.deleteOne({ email, stil: stilId });
 
     if (deletion.n == 1) {
-      return res.status(200).json({ ok: 1 });
+      const dataAfterEvent = await models.Bookmark.findByEmail(email);
+      return res.status(200).json({ ok: 1, data: dataAfterEvent });
     } else {
       next(createError(400, 'Already processed'));
     }
   } catch (e) {
+    console.error(e);
     next(createError(500));
   }
 };
