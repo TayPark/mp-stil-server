@@ -78,6 +78,8 @@ export const deploy = async (req, res, next) => {
 export const deleteStil = async (req, res, next) => {
   const { stilId } = req.body;
 
+  console.log(`Delete targetId is ${stilId}`);
+
   try {
     const deletion = await models.Stil.deleteOne({ _id: stilId });
 
