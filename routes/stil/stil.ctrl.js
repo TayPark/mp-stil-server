@@ -76,7 +76,7 @@ export const deploy = async (req, res, next) => {
 };
 
 export const deleteStil = async (req, res, next) => {
-  const { stilId } = req.body;
+  const stilId = req.body.stilId;
 
   console.log(`Delete targetId is ${stilId}`);
 

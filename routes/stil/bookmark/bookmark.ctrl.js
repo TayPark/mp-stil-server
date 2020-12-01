@@ -45,7 +45,8 @@ export const addBookmark = async (req, res, next) => {
  * @var stil - Stil's objectId to be deleted
  */
 export const deleteBookmark = async (req, res, next) => {
-  const { email, stilId } = req.body;
+  const email = req.body.email;
+  const stilId = req.body.stilId;
 
   try {
     const deletion = await models.Bookmark.deleteOne({ email, stil: stilId });
