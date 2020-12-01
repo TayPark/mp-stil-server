@@ -51,6 +51,19 @@ export const addMyTil = async (req, res, next) => {
   }
 };
 
+export const updateMyTil = async (req, res, next) => {
+  const { content, author } = req.body;
+
+  try {
+    const myTIL = await models.Stil.findOne({ author, deployed: false });
+    if (myTIL) {
+      await models.Stil.updateOne({ _id: myTIL._id }, { $set: { content } });
+    } else {
+      return next(createError(400));
+    }
+  }
+}
+
 export const deploy = async (req, res, next) => {
   const { title, summary, author } = req.body;
 
@@ -65,7 +78,7 @@ export const deploy = async (req, res, next) => {
         { _id: undeployedData._id },
         { $set: { title, summary, deployed: true } }
       );
-      return res.status(200).json({ ok: 1 });
+      return res.status(200).json({ ok: 1, data: [] });
     } else {
       next(createError(404, 'TIL이 비었습니다.'));
     }
