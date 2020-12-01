@@ -33,14 +33,14 @@ export const getStilByType = async (req, res, next) => {
   }
 };
 
-export const save = async (req, res, next) => {
+export const addMyTil = async (req, res, next) => {
   const { content, author } = req.body;
 
   try {
     const myTIL = await models.Stil.findOne({ author, deployed: false });
 
     if (myTIL) {
-      await models.Stil.updateOne({ _id: myTIL._id }, { $set: { content } });
+      await models.Stil.updateOne({ _id: myTIL._id }, { $push: { content } });
     } else {
       await new models.Stil({ author, content }).save();
     }
