@@ -47,6 +47,8 @@ export const addBookmark = async (req, res, next) => {
 export const deleteBookmark = async (req, res, next) => {
   const { email, stilId } = req.body;
 
+console.log(`requested with ${email}, ${stilId} `);
+
   try {
     const deletion = await models.Bookmark.deleteOne({ email, stil: stilId });
 

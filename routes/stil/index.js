@@ -6,7 +6,7 @@ const stilRouter = new Router({ mergeParams: true });
 stilRouter.get('/', stilController.getStilByType);
 stilRouter.post('/', stilController.deploy);
 stilRouter.patch('/', stilController.save);
-stilRouter.delete('/', stilController.deleteStil);
+stilRouter.post('/delete', stilController.deleteStil);
 
 stilRouter.use('/bookmark', bookmark);
 
