@@ -44,7 +44,9 @@ export const addMyTil = async (req, res, next) => {
     } else {
       await new models.Stil({ author, content }).save();
     }
-    return res.status(200).json({ ok: 1 });
+
+    const updatedTil = await models.Stil.findOne({ author, deployed: false });
+    return res.status(200).json({ ok: 1, data: updatedTil });
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -61,7 +63,8 @@ export const updateMyTil = async (req, res, next) => {
     } else {
       return next(createError(400));
     }
-    return res.status(200).json({ ok: 1 });
+    const updatedTil = await models.Stil.findOne({ author, deployed: false });
+    return res.status(200).json({ ok: 1, data: updatedTil });
   } catch (e) {
     console.error(e);
     next(createError(e));
