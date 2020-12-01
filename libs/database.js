@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 // mute eslint for guarantee global vars
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 mongoose.Promise = global.Promise;
 
 const options = {
