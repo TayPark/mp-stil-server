@@ -11,9 +11,7 @@ export const getStilByType = async (req, res, next) => {
     if (requestType === 'my') {
       const temp = await models.Stil.findOne({ author: email, deployed: false }, projectionOpt);
       if (temp) {
-        resultData = temp.map(each => {
-          return each.content;
-        });
+        resultData = (temp.toJSON()).content
       } else {
         resultData = [];
       }
