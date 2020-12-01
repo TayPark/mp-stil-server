@@ -61,6 +61,7 @@ export const updateMyTil = async (req, res, next) => {
     } else {
       return next(createError(400));
     }
+    return res.status(200).json({ ok: 1 });
   } catch (e) {
     console.error(e);
     next(createError(e));
