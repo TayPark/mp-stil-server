@@ -15,7 +15,7 @@ export const addBookmark = async (req, res, next) => {
   const { email, stilId } = req.body;
 
   try {
-    const checkExistence = await models.Bookmark.find({ email, stil: stilId });
+    const checkExistence = await models.Bookmark.findOne({ email, stil: stilId });
     
     if (checkExistence) {
       return next(createError(400, 'Already processed data'));
