@@ -46,7 +46,7 @@ export const addMyTil = async (req, res, next) => {
     }
 
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json({ ok: 1, data: updatedTil });
+    return res.status(200).json(updatedTil);
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -64,7 +64,7 @@ export const updateMyTil = async (req, res, next) => {
       return next(createError(400));
     }
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json({ ok: 1, data: updatedTil });
+    return res.status(200).json(updatedTil);
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -105,7 +105,7 @@ export const deleteStil = async (req, res, next) => {
 
     if (deletion.n == 1) {
       const resultData = await models.Stil.find({ deployed: true }, { __v: 0 });
-      return res.status(200).json({ ok: 1, data: resultData });
+      return res.status(200).json(resultData);
     } else {
       next(createError(400, 'Already processed'));
     }
