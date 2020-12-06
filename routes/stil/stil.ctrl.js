@@ -11,7 +11,7 @@ export const getStilByType = async (req, res, next) => {
     if (requestType === 'my') {
       const temp = await models.Stil.findOne({ author: email, deployed: false }, projectionOpt);
       if (temp) {
-        resultData = (temp.toJSON()).content
+        resultData = temp.toJSON().content;
       } else {
         resultData = [];
       }
@@ -26,7 +26,7 @@ export const getStilByType = async (req, res, next) => {
       next(createError(404, 'Unproper access'));
     }
 
-    return res.status(200).json(resultData);
+    return res.status(200).json({ ok: 1, data: resultData });
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -64,12 +64,12 @@ export const updateMyTil = async (req, res, next) => {
       return next(createError(400));
     }
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json(updatedTil);
+    return res.status(200).json({ ok: 1, data: updatedTil });
   } catch (e) {
     console.error(e);
     next(createError(e));
   }
-}
+};
 
 export const deploy = async (req, res, next) => {
   const { title, summary, author } = req.body;
@@ -105,7 +105,7 @@ export const deleteStil = async (req, res, next) => {
 
     if (deletion.n == 1) {
       const resultData = await models.Stil.find({ deployed: true }, { __v: 0 });
-      return res.status(200).json(resultData);
+      return res.status(200).json({ ok: 1, data: resultData });
     } else {
       next(createError(400, 'Already processed'));
     }

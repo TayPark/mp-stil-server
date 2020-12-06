@@ -24,7 +24,7 @@ export const addBookmark = async (req, res, next) => {
     const creationResult = await models.Bookmark.create({ email, stil: stilId });
     if (creationResult) {
       const newData = await models.Bookmark.findByEmail(email);
-      return res.status(200).json(newData);
+      return res.status(200).json({ ok: 1, data: newData });
     } else {
       next(createError(400, 'Fail to add bookmark'));
     }
@@ -54,7 +54,7 @@ console.log(`requested with ${email}, ${stilId} `);
 
     if (deletion.n == 1) {
       const newData = await models.Bookmark.findByEmail(email);
-      return res.status(200).json(newData);
+      return res.status(200).json({ ok: 1, data: newData });
     } else {
       next(createError(400, 'Already processed data'));
     }
