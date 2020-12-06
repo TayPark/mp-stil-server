@@ -3,7 +3,7 @@ import * as models from '../../models/index';
 
 export const join = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log('Join requested by ' + email, password);
+  console.log('[INFO] Join requested by ' + email, password);
   try {
     const existence = await models.User.findOne({ email });
 
@@ -26,7 +26,7 @@ export const join = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log('Login requested by ' + email, password);
+  console.log('[INFO] Login requested by ' + email, password);
   try {
     const matchResult = await models.User.findOne({ email, password });
     if (matchResult) {
