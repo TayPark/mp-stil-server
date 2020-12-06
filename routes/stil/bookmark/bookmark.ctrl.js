@@ -54,11 +54,7 @@ console.log(`requested with ${email}, ${stilId} `);
 
     if (deletion.n == 1) {
       const newData = await models.Bookmark.findByEmail(email);
-      const filteredData = (newData.toJSON()).filter(each => {
-        return each.stil != null
-      })
-
-      return res.status(200).json({ ok: 1, data: filteredData });
+      return res.status(200).json({ ok: 1, data: newData });
     } else {
       next(createError(400, 'Already processed data'));
     }
