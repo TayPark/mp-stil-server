@@ -21,12 +21,7 @@ bookmarkSchema.statics.create = function ({ email, stil }) {
 };
 
 bookmarkSchema.statics.findByEmail = function (email) {
-    const dataFromDatabase = this.find({ email }).populate({ path: 'stil', select: '-__v' });
-    return dataFromDatabase.filter(each => {
-        if (each.content) {
-            return each
-        }
-    })
+    return this.find({ email }).populate({ path: 'stil', select: '-__v' });
 };
 
 export default model('bookmark', bookmarkSchema);
