@@ -85,7 +85,7 @@ export const deploy = async (req, res, next) => {
         { _id: undeployedData._id },
         { $set: { title, summary, deployed: true } }
       );
-      return res.status(200).json({ ok: 1, data: [] });
+      return res.status(200).json({ ok: 1 });
     } else {
       next(createError(404, 'TIL이 비었습니다.'));
     }
@@ -105,7 +105,7 @@ export const deleteStil = async (req, res, next) => {
 
     if (deletion.n == 1) {
       const resultData = await models.Stil.find({ deployed: true }, { __v: 0 });
-      return res.status(200).json(resultData);
+      return res.status(200).json({ ok: 1, data: resultData });
     } else {
       next(createError(400, 'Already processed'));
     }
