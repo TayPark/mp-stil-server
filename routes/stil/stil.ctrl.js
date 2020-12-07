@@ -46,7 +46,7 @@ export const addMyTil = async (req, res, next) => {
     }
 
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json(updatedTil.contentSet);
+    return res.status(200).json({ ok: 1, data: updatedTil.contentSet});
   } catch (e) {
     console.error(e);
     next(createError(e));
