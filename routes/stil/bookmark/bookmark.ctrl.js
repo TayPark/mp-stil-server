@@ -16,7 +16,7 @@ export const addBookmark = async (req, res, next) => {
 
   try {
     const checkExistence = await models.Bookmark.findOne({ email, stil: stilId });
-    
+
     if (checkExistence) {
       return next(createError(400, 'Already processed data'));
     }
@@ -46,8 +46,6 @@ export const addBookmark = async (req, res, next) => {
  */
 export const deleteBookmark = async (req, res, next) => {
   const { email, stilId } = req.body;
-
-console.log(`requested with ${email}, ${stilId} `);
 
   try {
     const deletion = await models.Bookmark.deleteOne({ email, stil: stilId });
