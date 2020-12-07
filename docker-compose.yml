@@ -6,7 +6,7 @@ networks:
 
 services:
   server:
-    container_name: server
+    container_name: stil_server
     build:
       context: ./
       dockerfile: Dockerfile.server
@@ -23,7 +23,7 @@ services:
     restart: always
 
   mongo:
-    container_name: mongo
+    container_name: stil_mongo
     image: mongo
     volumes:
       - ./data:/data/db

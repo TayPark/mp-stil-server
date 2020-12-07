@@ -9,12 +9,14 @@ import mongoose from 'mongoose';
  * @var author - Author of stil
  */
 const stilSchema = new mongoose.Schema({
-    title: { type: String },
-    summary: { type: String },
-    content: { type: [String], required: true },
-    createdAt: { type: String, default: Date.now },
-    author: { type: String, required: true },
-    deployed: { type: Boolean, default: false }
+  title: { type: String },
+  summary: { type: String },
+  contentSet: [
+    { content: { type: String, required: true }, checked: { type: Boolean, default: false } },
+  ],
+  createdAt: { type: String, default: Date.now },
+  author: { type: String, required: true },
+  deployed: { type: Boolean, default: false },
 });
 
 /**
@@ -25,11 +27,11 @@ const stilSchema = new mongoose.Schema({
  * @param {String} author
  */
 stilSchema.statics.create = function (author, content) {
-    return new this({ author, content }).save();
+  return new this({ author, content }).save();
 };
 
 stilSchema.statics.deploy = function (title, summary, content, author) {
-    return this.updateOne({ author, deployed: false}, { title, summary, content });
-}
+  return this.updateOne({ author, deployed: false }, { title, summary, content });
+};
 
 export default mongoose.model('stil', stilSchema);

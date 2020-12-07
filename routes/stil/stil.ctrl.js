@@ -38,9 +38,9 @@ export const addMyTil = async (req, res, next) => {
 
   try {
     const myTIL = await models.Stil.findOne({ author, deployed: false });
-
+    const contentObj = { content, checked: false };
     if (myTIL) {
-      await models.Stil.updateOne({ _id: myTIL._id }, { $push: { content } });
+      await models.Stil.updateOne({ _id: myTIL._id }, { $push: { contentSet: contentObj } });
     } else {
       await new models.Stil({ author, content }).save();
     }
@@ -49,6 +49,22 @@ export const addMyTil = async (req, res, next) => {
     return res.status(200).json(updatedTil);
   } catch (e) {
     console.error(e);
+    next(createError(e));
+  }
+};
+
+export const toggleItem = async (req, res, next) => {
+  const { author, toggle, itemId } = req.body;
+  try {
+    await models.Stil.updateOne(
+      { author, 'contentSet._id': itemId },
+      { $set: { 'contentSet.$.checked': toggle } }
+    );
+    return res.status(200).json({
+      ok: 1,
+    });
+  } catch (e) {
+    console.log(e);
     next(createError(e));
   }
 };
