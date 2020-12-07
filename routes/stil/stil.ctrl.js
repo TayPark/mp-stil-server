@@ -42,7 +42,7 @@ export const addMyTil = async (req, res, next) => {
     if (myTIL) {
       await models.Stil.updateOne({ _id: myTIL._id }, { $push: { contentSet: contentObj } });
     } else {
-      await new models.Stil({ author, content }).save();
+      await new models.Stil({ author, contentSet: [contentObj] }).save();
     }
 
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
