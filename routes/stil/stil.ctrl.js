@@ -11,7 +11,7 @@ export const getStilByType = async (req, res, next) => {
     if (requestType === 'my') {
       const temp = await models.Stil.findOne({ author: email, deployed: false }, projectionOpt);
       if (temp) {
-        resultData = temp.toJSON().content;
+        resultData = temp.contentSet;
       } else {
         resultData = [];
       }
@@ -46,7 +46,7 @@ export const addMyTil = async (req, res, next) => {
     }
 
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json(updatedTil);
+    return res.status(200).json(updatedTil.contentSet);
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -70,17 +70,20 @@ export const toggleItem = async (req, res, next) => {
 };
 
 export const updateMyTil = async (req, res, next) => {
-  const { content, author } = req.body;
+  const { content, author, itemId } = req.body;
 
   try {
     const myTIL = await models.Stil.findOne({ author, deployed: false });
     if (myTIL) {
-      await models.Stil.updateOne({ _id: myTIL._id }, { $set: { content } });
+      await models.Stil.updateOne(
+        { author, 'contentSet._id': itemId },
+        { $set: { 'contentSet.$.content': content } }
+      );
     } else {
       return next(createError(400));
     }
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json({ ok: 1, data: updatedTil });
+    return res.status(200).json({ ok: 1, data: updatedTil.contentSet });
   } catch (e) {
     console.error(e);
     next(createError(e));
