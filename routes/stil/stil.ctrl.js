@@ -90,6 +90,27 @@ export const updateMyTil = async (req, res, next) => {
   }
 };
 
+export const deleteOne = async (req, res, next) => {
+  const { author, itemId } = req.body;
+
+  try {
+    const myTIL = await models.Stil.findOne({ author, deployed: false });
+    if (myTIL) {
+      await models.Stil.updateOne(
+        { author, deployed: false },
+        { $pull: { contentSet: { _id: itemId } } }
+      );
+    } else {
+      return next(createError(400));
+    }
+    const updatedTil = await models.Stil.findOne({ author, deployed: false });
+    return res.status(200).json({ ok: 1, data: updatedTil.contentSet })
+  } catch (e) {
+    console.error(e);
+    next(createError(e));
+  }
+}
+
 export const deploy = async (req, res, next) => {
   const { title, summary, author } = req.body;
 
@@ -105,7 +126,7 @@ export const deploy = async (req, res, next) => {
         contentData.push(data.content);
       }
       console.log(contentData);
-      await models.Stil.update(
+      await models.Stil.updateOne(
         { _id: undeployedData._id },
         {
           $set: { title, summary, deployed: true },

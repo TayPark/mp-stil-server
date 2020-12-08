@@ -7,6 +7,7 @@ stilRouter.get('/', stilController.getStilByType);
 stilRouter.post('/', stilController.addMyTil);
 stilRouter.patch('/edit', stilController.updateMyTil);
 stilRouter.patch('/check', stilController.toggleItem);
+stilRouter.patch('/pull', stilController.deleteOne);
 stilRouter.post('/deploy', stilController.deploy);
 stilRouter.post('/delete', stilController.deleteStil);
 
