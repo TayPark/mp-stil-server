@@ -46,7 +46,7 @@ export const addMyTil = async (req, res, next) => {
     }
 
     const updatedTil = await models.Stil.findOne({ author, deployed: false });
-    return res.status(200).json({ ok: 1, data: updatedTil.contentSet});
+    return res.status(200).json({ ok: 1, data: updatedTil.contentSet });
   } catch (e) {
     console.error(e);
     next(createError(e));
@@ -100,9 +100,19 @@ export const deploy = async (req, res, next) => {
   try {
     const undeployedData = await models.Stil.findOne({ author, deployed: false });
     if (undeployedData) {
-      await models.Stil.updateOne(
+      const contentData = [];
+      for (let data of undeployedData.contentSet) {
+        contentData.push(data.content);
+      }
+      console.log(contentData);
+      await models.Stil.update(
         { _id: undeployedData._id },
-        { $set: { title, summary, deployed: true } }
+        {
+          $set: { title, summary, deployed: true },
+          $push: { content: contentData },
+          $unset: { contentSet: 1 },
+        },
+        { multi: true }
       );
       return res.status(200).json({ ok: 1 });
     } else {

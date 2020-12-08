@@ -11,6 +11,7 @@ import mongoose from 'mongoose';
 const stilSchema = new mongoose.Schema({
   title: { type: String },
   summary: { type: String },
+  content: { type: [String], default: []},
   contentSet: [
     { content: { type: String, required: true }, checked: { type: Boolean, default: false } },
   ],
